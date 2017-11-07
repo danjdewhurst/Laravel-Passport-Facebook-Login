@@ -43,8 +43,7 @@ Add `Danjdewhurst\PassportFacebookLogin\FacebookLoginGrantProvider::class` to yo
 ## Assumptions:
 * Your `User` model has the folowing fields:
 * * `facebook_id`
-* * `first_name`
-* * `last_name`
+* * `name`
 * * `email`
 * * `password`
 
