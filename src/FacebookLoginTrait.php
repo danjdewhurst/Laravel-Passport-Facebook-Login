@@ -46,7 +46,8 @@ trait FacebookLoginTrait {
                 /**
                  * Create a new user if they haven't already signed up.
                  */
-                $user = $userModel::where('email', $fbUser['email'])->first();
+                $user = $userModel::where('facebook_id', $fbUser['id'])->first();
+
                 if (!$user) {
                     $user = new $userModel();
                     $user->facebook_id = $fbUser['id'];
