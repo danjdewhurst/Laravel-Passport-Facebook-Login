@@ -51,8 +51,7 @@ trait FacebookLoginTrait {
                 if (!$user) {
                     $user = new $userModel();
                     $user->facebook_id = $fbUser['id'];
-                    $user->first_name = $fbUser['first_name'];
-                    $user->last_name = $fbUser['last_name'];
+                    $user->name = $fbUser['first_name'] . ' ' . $fbUser['last_name'];
                     $user->email = $fbUser['email'];
                     $user->password = uniqid('fb_', true); // Random password.
                     $user->save();
