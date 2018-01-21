@@ -27,6 +27,7 @@ return [
 
     'registration' => [
         'facebook_id' => env('FACEBOOK_ID_COLUMN', 'facebook_id'),
+        'user_id'     => env('USER_ID', 'id'),
         'email'       => env('EMAIL_COLUMN', 'email'),
         'password'    => env('PASSWORD_COLUMN', 'password'),
         'first_name'  => env('FIRST_NAME_COLUMN', 'first_name'),
