@@ -13,6 +13,7 @@ use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\RequestEvent;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Laravel\Passport\Passport;
 
 class FacebookLoginRequestGrant extends AbstractGrant
 {
@@ -104,7 +105,8 @@ class FacebookLoginRequestGrant extends AbstractGrant
         } else {
             throw OAuthServerException::serverError('Unable to find loginFacebook method on user model.');
         }
+        $user_id_column = config('facebook.registration.user_id', 'id');
 
-        return ($user) ? new User($user->id) : null;
+        return ($user) ? new User($user->{$user_id_column}) : null;
     }
 }

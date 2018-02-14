@@ -48,6 +48,7 @@ Install with composer `composer require danjdewhurst/laravel-passport-facebook-l
 
     'registration' => [
         'facebook_id' => env('FACEBOOK_ID_COLUMN', 'facebook_id'),
+        'user_id'     => env('USER_ID', 'id'),
         'email'       => env('EMAIL_COLUMN', 'email'),
         'password'    => env('PASSWORD_COLUMN', 'password'),
         'first_name'  => env('FIRST_NAME_COLUMN', 'first_name'),
@@ -66,13 +67,6 @@ Install with composer `composer require danjdewhurst/laravel-passport-facebook-l
     3. client_id
     4. client_secret
 * An `access_token` and `refresh_token` will be returned if successful.
-
-## Assumptions:
-* Your `User` model has the folowing fields:
-* * `facebook_id`
-* * `name` or `first_name` & `last_name`
-* * `email`
-* * `password`
 
 ## Credits:
 * https://github.com/mirkco/Laravel-Passport-Facebook-Login
