@@ -2,6 +2,7 @@
 
 namespace Danjdewhurst\PassportFacebookLogin;
 
+use Laravel\Passport\Passport;
 use Illuminate\Http\Request;
 use Laravel\Passport\Bridge\User;
 use Laravel\Passport\Passport;
