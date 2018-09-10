@@ -66,6 +66,7 @@ Install with composer `composer require danjdewhurst/laravel-passport-facebook-l
     3. client_id
     4. client_secret
 * An `access_token` and `refresh_token` will be returned if successful.
+* To prevent a new user from being created and instead return a 401 error, add `prevent_user_create: true` to your POST body.
 
 ## Assumptions:
 * Your `User` model has the folowing fields:

@@ -43,10 +43,6 @@ trait FacebookLoginTrait
                  * Check if the user has already signed up.
                  */
                 $userModel = config('auth.providers.users.model');
-
-                /**
-                 * Create a new user if they haven't already signed up.
-                 */
                 $facebook_id_column = config('facebook.registration.facebook_id', 'facebook_id');
                 $name_column        = config('facebook.registration.name', 'name');
                 $first_name_column  = config('facebook.registration.first_name', 'first_name');
@@ -56,7 +52,14 @@ trait FacebookLoginTrait
 
                 $user = $userModel::where($facebook_id_column, $fbUser['id'])->first();
 
+                /**
+                 * Create a new user if they haven't already signed up.
+                 */
                 if (!$user) {
+                    if ($request->has('prevent_user_create') && $request->get('prevent_user_create')) {
+                        return null;
+                    }
+
                     $user = new $userModel();
                     $user->{$facebook_id_column} = $fbUser['id'];
 
@@ -80,6 +83,8 @@ trait FacebookLoginTrait
                     if (!is_null(config('facebook.registration.attach_role'))) {
                         $user->attachRole(config('facebook.registration.attach_role'));
                     }
+
+                    return $user;
                 }
 
                 return $user;
