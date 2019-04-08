@@ -27,8 +27,8 @@ trait FacebookLoginTrait
                  * Initialise Facebook SDK.
                  */
                 $fb = new Facebook([
-                    'app_id' => config('facebook.app.id'),
-                    'app_secret' => config('facebook.app.secret'),
+                    'appId' => config('facebook.app.id'),
+                    'secret' => config('facebook.app.secret'),
                     'default_graph_version' => 'v2.5',
                 ]);
                 $fb->setDefaultAccessToken($request->get('fb_token'));
@@ -53,9 +53,16 @@ trait FacebookLoginTrait
                 $last_name_column   = config('facebook.registration.last_name', 'last_name');
                 $email_column       = config('facebook.registration.email', 'email');
                 $password_column    = config('facebook.registration.password', 'password');
+				$verified_column	= config('facebook.registration.verified', 'verified');
 
                 $user = $userModel::where($facebook_id_column, $fbUser['id'])->first();
-
+                if (!$user) {
+					
+                    $user = $userModel::where($email_column, $fbUser['email'])->first();
+					$user->{$facebook_id_column} = $fbUser['id'];
+					$user->save();
+                }
+                
                 if (!$user) {
                     $user = new $userModel();
                     $user->{$facebook_id_column} = $fbUser['id'];
@@ -69,6 +76,10 @@ trait FacebookLoginTrait
                     if ($name_column) {
                         $user->{$name_column} = $fbUser['first_name'] . ' ' . $fbUser['last_name'];
                     }
+					
+					if ($verified_column) {
+						$user->{$verified_column} = true;
+					}
 
                     $user->{$email_column}    = $fbUser['email'];
                     $user->{$password_column} = bcrypt(uniqid('fb_', true)); // Random password.
