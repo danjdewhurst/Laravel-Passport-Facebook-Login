@@ -1,5 +1,5 @@
 <?php
-namespace Danjdewhurst\PassportFacebookLogin;
+namespace Gicminos\PassportFacebookLogin;
 
 use Facebook\Facebook;
 use Illuminate\Http\Request;
