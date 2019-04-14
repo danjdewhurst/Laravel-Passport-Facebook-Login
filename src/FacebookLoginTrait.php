@@ -57,42 +57,43 @@ trait FacebookLoginTrait
 
                 $user = $userModel::where($facebook_id_column, $fbUser['id'])->first();
                 if (!$user) {
-					
+
                     $user = $userModel::where($email_column, $fbUser['email'])->first();
-					$user->{$facebook_id_column} = $fbUser['id'];
-					$user->save();
-                }
-                
-                if (!$user) {
-                    $user = new $userModel();
+
+                    if (!$user) {
+                        $user = new $userModel();
+                        $user->{$facebook_id_column} = $fbUser['id'];
+
+                        if ($first_name_column) {
+                            $user->{$first_name_column} = $fbUser['first_name'];
+                        }
+                        if ($last_name_column) {
+                            $user->{$last_name_column} = $fbUser['last_name'];
+                        }
+                        if ($name_column) {
+                            $user->{$name_column} = $fbUser['first_name'] . ' ' . $fbUser['last_name'];
+                        }
+
+                        $user->{$email_column} = $fbUser['email'];
+                        $user->{$password_column} = bcrypt(uniqid('fb_', true)); // Random password.
+
+                        /**
+                         * Attach a role to the user.
+                         */
+                        if (!is_null(config('facebook.registration.attach_role'))) {
+                            $user->attachRole(config('facebook.registration.attach_role'));
+                        }
+                    }
+
+                    if ($verified_column) {
+                        $user->{$verified_column} = true;
+                    }
+
                     $user->{$facebook_id_column} = $fbUser['id'];
-
-                    if ($first_name_column) {
-                        $user->{$first_name_column} = $fbUser['first_name'];
-                    }
-                    if ($last_name_column) {
-                        $user->{$last_name_column} = $fbUser['last_name'];
-                    }
-                    if ($name_column) {
-                        $user->{$name_column} = $fbUser['first_name'] . ' ' . $fbUser['last_name'];
-                    }
-					
-					if ($verified_column) {
-						$user->{$verified_column} = true;
-					}
-
-                    $user->{$email_column}    = $fbUser['email'];
-                    $user->{$password_column} = bcrypt(uniqid('fb_', true)); // Random password.
                     $user->save();
 
-                    /**
-                     * Attach a role to the user.
-                     */
-                    if (!is_null(config('facebook.registration.attach_role'))) {
-                        $user->attachRole(config('facebook.registration.attach_role'));
-                    }
                 }
-
+                
                 return $user;
             }
         } catch (\Exception $e) {
